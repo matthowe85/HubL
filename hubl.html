@@ -1,0 +1,39 @@
+
+{% if dynamic_page_hubdb_row %}
+
+{% elif dynamic_page_hubdb_table_id %} 
+    {% set table = hubdb_table_rows( module.hubdbtable_field) %} 
+    {% for row in table %}
+        {% if row.active %}
+            <div class="section bg-light-blue py-0 the-cows-loop">
+                <div class="row-fluid dot-divider py-6-lg">
+                    <div class="span4 text-center pb-6-sm">
+                        <img src="{{ row.image.url }}" class="farm-img" />
+                    </div>
+                    <div class="span8 text-center">
+                        <div class="heading clearfix">
+                            <div class="flex cow-img-container">
+                                {% set count = { val: 0 } %} 
+                                {% for cow in row.cows %} 
+                                    {% if count.val < 3 %}
+                                        <img src="{{ cow.cow_picture.url }}" class="cow-img" />
+                                    {% endif %} 
+                                    {% do count.update( 'val', count.val + 1) %} 
+                                {% endfor %}
+                            </div>                      
+                            <h3 class="mb-0 pb-0">{{ row.name }}</h3>
+                            <p>{{ row.location }}</p>
+                            <h6 class="font-weight-bold mb-0"> {{ row.cows[0].cow_name }} lives here! </h6>
+                        </div>
+                        {{ row.excerpt }}
+                        <div class="text-center pt-6-sm">
+                            <div class="text-center">
+                                <a class="btn bg-green" href="{{ request.path }}/{{ row.hs_path }}">Learn More!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %} 
+    {% endfor %} 
+{% endif %}
